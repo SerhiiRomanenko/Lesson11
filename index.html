@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+    <script>
+
+        var notification = [
+            {
+                app: 'telegram',
+                message: 'Some text message',
+                sender: 'Ivan Petrov',
+                date: '31/07/2019',
+            },
+            {
+                app: 'telegram',
+                message: 'Some text message',
+                sender: 'Ivan Petrov',
+                date: '31/07/2019',
+            },
+            {
+                app: 'telegram',
+                message: 'Some text message',
+                sender: 'Petr Ivanov',
+                date: '31/07/2019',
+            },
+            {
+                app: 'telegram',
+                message: 'Some text message',
+                sender: 'Oleg Shwets',
+                date: '12/04/2019',
+            },
+            {
+                app: 'instagram',
+                message: 'Some text message',
+                sender: 'Oleg Shwets',
+                date: '12/04/2019',
+            },
+        ];
+
+        function groupBy(array, property) {
+            return array.reduce(function(result, element) {
+                result[element[property]] = result[element[property]] || [];
+                result[element[property]].push(element);
+
+                return result;
+            }, {})
+        }
+
+        function makeMatrix(array, property) {
+            return array.reduce(function(result, element, index, array) {
+                if (index && array[index - 1][property] === element[property]) {
+                    result.find(function(group) {
+                        return group[0][property] === element[property]
+                    })
+                    .push(element);
+                } else {
+                    result.push([element]);
+                }
+                return result;
+            }, [])
+        }
+
+        function foo(array, firstProperty, secondProperty) {
+            var groupedValues = groupBy(array, firstProperty);
+
+            for (var el in groupedValues) {
+                groupedValues[el] = makeMatrix(groupedValues[el], secondProperty)
+            }
+            return groupedValues;
+        }
+
+        console.log(foo(notification, 'app', 'sender'));
+
+
+    </script>
+
+</body>
+</html>
